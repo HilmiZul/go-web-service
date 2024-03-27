@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -20,7 +21,16 @@ var albums = []album{
 }
 
 func main() {
+  // mode release
+	gin.SetMode(gin.ReleaseMode)
+
 	router := gin.Default()
+	
+	// CORS
+  config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"*"}
+	router.Use(cors.New(config))
+
 	router.GET("/albums", getAlbums)
 	router.POST("/albums", postAlbums)
 	router.GET("/albums/:id", getAlbumById)
